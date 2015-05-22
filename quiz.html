@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 	<head>
@@ -9,26 +10,34 @@
 	</body>
 
 		<script>
+	// create global "encrypt" object to be called
 window.Encrypt = {
   scramble : function(selector) {
+  	//cache all the vars
     var elem = $(selector), message = elem.text(), i, html = '';
 	random_character = function() {
+		// create random character for "encoding" the message
 	    var chars = "0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ";
 	    return chars.substr( Math.floor(Math.random() * 62), 1);
 	}
     for(i = 0; i < message.length; i++) {
+    	// for each letter in the message, hide the message and spit out intermediate random characters
       html += '<span hidden>'+message[i]+'</span><span>'+random_character()+'</span>';
+      // create break tags to format better
       if (i%60===0 && i !== 0) {
       	html += '<br>';
       };
     }
+    // place the generated html back
     elem.html(html);
   },
   unscramble : function(selector) {
     var elem = $(selector);
+    // show the message from the hidden spans
     elem.html(elem.find('span').filter('[hidden]').text());
   }
 };
+// on click handler to encrypt / decrypt
 $('#encryptBtn').on('click', function(event) {
 	event.preventDefault();
 	if (!$(this).hasClass('toggled')) {
